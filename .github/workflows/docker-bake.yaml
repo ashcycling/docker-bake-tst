@@ -28,6 +28,7 @@ jobs:
           uses: docker/bake-action@v6
           with:
             # files: /home/runner/_work/qrc-gen/qrc-gen/docker-bake.hcl
+            source: .
             push: true
             # set: |
             #   *.tags=user/app:latest
