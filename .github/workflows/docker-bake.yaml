@@ -30,6 +30,7 @@ jobs:
             # files: /home/runner/_work/qrc-gen/qrc-gen/docker-bake.hcl
             source: .
             push: true
+            targets: all
             # set: |
             #   *.tags=user/app:latest
         - name: List files in the repository
