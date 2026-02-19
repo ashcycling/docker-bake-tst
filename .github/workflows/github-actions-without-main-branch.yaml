@@ -1,0 +1,17 @@
+name: GitHub Actions without Main Branch
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [workflow_dispatch]
+    # push:
+    #     branches-ignore:
+    #         - 'main'
+jobs:
+    Second-GitHub-Actions:
+        runs-on: self-hosted
+        steps:
+          - run: echo "This is a second job running in the same workflow."
+          - name: Install Helm 3
+            uses: WyriHaximus/github-action-helm3@v3
+            with:
+              exec: |
+                    echo "This is a second job running in the same workflow."
+                    helm version

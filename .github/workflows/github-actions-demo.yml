@@ -1,0 +1,54 @@
+name: Install GitHub Runner
+run-name: ${{ github.actor }} is testing out GitHub Actions in ${{ github.ref_name }} 🚀
+on: [workflow_dispatch]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v5
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Display K3s Config
+        run: |
+          cat deployment/k3s/k3s.yaml
+      - name: Display kubectl version
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+      - run: |
+          kubectl create namespace github-runner 
+          kubectl create secret -n github-runner generic github-runner-secret --from-literal=REPO="${{ github.repository }}" --from-literal=TOKEN="${{ secrets.TOKEN_PKG }}"
+          kubectl apply -f deployment/GitHubRunner/deployment.yaml
+      # - name: Install kubectl
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+      #     curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      #     sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg # allow unprivileged APT programs to read this keyring
+      #     echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+      #     sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list   # helps tools such as command-not-found to work correctly
+      #     sudo apt-get update
+      #     sudo apt-get install -y kubectl
+      # - name: Configure kubectl
+      #   run: |
+      #     echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ${HOME}/.kube/config
+      # - name: Get K8s Pods
+      #   run: |
+      #     kubectl -n github-runner get po
+
+      # Helpful action to update yaml files values
+      # - name: Update values.yaml
+      #   uses: fjogeleit/yaml-update-action@main
+      #   with:
+      #     valueFile: 'file.yaml'
+      #     propertyPath: 'file.version'
+      #     value: v1.0.1
+      #     commitChange: false
