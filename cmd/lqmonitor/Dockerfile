@@ -16,8 +16,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 #     rm -rf /var/lib/apt/lists/*
 
 RUN go mod download
-RUN cd ./cmd/producer && go vet -v
-RUN cd ./cmd/producer && go test -v
+RUN cd ./cmd/lqmonitor && go vet -v
+RUN cd ./cmd/lqmonitor && go test -v
 
 RUN CGO_ENABLED=1 go build -o /go/bin/lqmonitor ./cmd/lqmonitor/lqmonitor.go
 
