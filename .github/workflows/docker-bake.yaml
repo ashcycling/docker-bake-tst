@@ -27,7 +27,7 @@ jobs:
           name: Build and push
           uses: docker/bake-action@v6
           with:
-            files: /home/runner/_work/qrc-gen/qrc-gen/docker-bake.hcl
+            # files: /home/runner/_work/qrc-gen/qrc-gen/docker-bake.hcl
             push: true
             set: |
               *.tags=user/app:latest
