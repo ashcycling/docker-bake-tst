@@ -29,8 +29,8 @@ jobs:
           with:
             # files: /home/runner/_work/qrc-gen/qrc-gen/docker-bake.hcl
             push: true
-            set: |
-              *.tags=user/app:latest
+            # set: |
+            #   *.tags=user/app:latest
         - name: List files in the repository
           run: |
             ls ${{ github.workspace }} 
